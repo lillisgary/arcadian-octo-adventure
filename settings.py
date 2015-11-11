@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 ######################
 # CARTRIDGE SETTINGS #
 ######################
-
+SHOP_PAYMENT_STEP_ENABLED = False
 # The following settings are already defined in cartridge.shop.defaults
 # with default values, but are common enough to be put here, commented
 # out, for convenient overriding.
@@ -12,14 +12,14 @@ from __future__ import absolute_import, unicode_literals
 # SHOP_CARD_TYPES = ("Mastercard", "Visa", "Diners", "Amex")
 
 # Setting to turn on featured images for shop categories. Defaults to False.
-# SHOP_CATEGORY_USE_FEATURED_IMAGE = True
+SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 
 # Set an alternative OrderForm class for the checkout process.
-# SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
+SHOP_CHECKOUT_FORM_CLASS = 'newtest.project.forms.OrderForm'
 
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
-# SHOP_CHECKOUT_STEPS_SPLIT = True
+SHOP_CHECKOUT_STEPS_SPLIT = False
 
 # If True, the checkout process has a final confirmation step before
 # completion.
