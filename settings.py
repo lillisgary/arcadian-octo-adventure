@@ -28,7 +28,7 @@ SHOP_CHECKOUT_STEPS_SPLIT = False
 # Controls the formatting of monetary values accord to the locale
 # module in the python standard library. If an empty string is
 # used, will fall back to the system's locale.
-SHOP_CURRENCY_LOCALE = "ZAR"
+SHOP_CURRENCY_LOCALE = "South African Rand"
 
 # Dotted package path and class name of the function that
 # is called on submit of the billing/shipping checkout step. This
