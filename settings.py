@@ -15,7 +15,7 @@ SHOP_PAYMENT_STEP_ENABLED = False
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 
 # Set an alternative OrderForm class for the checkout process.
-SHOP_CHECKOUT_FORM_CLASS = 'forms.OrderForm'
+# SHOP_CHECKOUT_FORM_CLASS = 'forms.OrderForm'
 
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
