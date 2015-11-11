@@ -15,7 +15,7 @@ SHOP_PAYMENT_STEP_ENABLED = False
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 
 # Set an alternative OrderForm class for the checkout process.
-SHOP_CHECKOUT_FORM_CLASS = 'newtest.project.forms.OrderForm'
+SHOP_CHECKOUT_FORM_CLASS = 'newtest.forms.OrderForm'
 
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
@@ -28,7 +28,7 @@ SHOP_CHECKOUT_STEPS_SPLIT = False
 # Controls the formatting of monetary values accord to the locale
 # module in the python standard library. If an empty string is
 # used, will fall back to the system's locale.
-# SHOP_CURRENCY_LOCALE = ""
+SHOP_CURRENCY_LOCALE = "ZAR"
 
 # Dotted package path and class name of the function that
 # is called on submit of the billing/shipping checkout step. This
