@@ -323,6 +323,7 @@ INSTALLED_APPS = (
     "django_extensions",
     "sorl.thumbnail",
     "newsletter",
+    "mathfilters",
 )
 
 # List of processors used by RequestContext to populate the context.
