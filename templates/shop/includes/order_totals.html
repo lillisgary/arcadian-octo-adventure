@@ -1,0 +1,42 @@
+{% load shop_tags i18n mathfilters %}
+<div class="order-totals">
+    {% if discount_total or shipping_total %}
+    <div><label>{% trans "Sub total" %}:</label> <span>{{ item_total|currency }}</span></div>
+    {% endif %}
+    {% if discount_total %}
+    <div>
+        <label>
+        {% if discount_type %}
+        {{ discount_type }}:
+        {% else %}
+        {% trans "Discount" %}:
+        {% endif %}
+        </label> <span>{{ discount_total|currency }}</span>
+    </div>
+    {% endif %}
+    {% if shipping_type or shipping_total %}
+    <div>
+        <label>
+        {% if shipping_type %}
+        {{ shipping_type }}:
+        {% else %}
+        {% trans "Shipping" %}:
+        {% endif %}
+        </label> <span>{{ shipping_total|currency }}</span>
+    </div>
+    {% endif %}
+
+    <div>
+        <label>
+        {% if tax_type %}
+        {{ tax_type }}:
+        {% else %}
+        {% trans "Tax" %}:
+        {% endif %}
+        </label> <span>{{ order_total|mul:0.14|currency }}</span>
+    </div>
+    {% with answer=order_total|mul:0.14 %}
+    <div class="total"><label>{% trans "Total excl" %}:</label> <span>{{ order_total|sub:answer|currency }}</span></div>
+    {% endwith %}
+    <div class="total"><label>{% trans "Total incl" %}:</label> <span>{{ order_total|currency }}</span></div>
+</div>

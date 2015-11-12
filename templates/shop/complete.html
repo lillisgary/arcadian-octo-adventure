@@ -1,0 +1,109 @@
+{% extends "shop/base.html" %}
+{% load i18n future %}
+
+{% block body_id %}complete{% endblock %}
+
+{% block meta_title %}{% trans "Buy Now" %}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+{% if settings.GOOGLE_ANALYTICS_ID %}
+<script>
+
+var decimal = function(amount) {
+    if (amount.toString().indexOf('.') == -1) {
+        amount += '.00';
+    }
+    return String(amount);
+};
+
+var _gaq = [['_trackPageview'], ['_addTrans',
+    // order ID - required
+    '{{ order.id }}',
+    // affiliation or store name
+    '',
+    // total - required
+    decimal({{ order.item_total }}{% if order.discount_total %} - {{ order.discount_total }}{% endif %}),
+    // tax
+    decimal({% if order.tax_total %}{{ order.tax_total }}{% else %}0{% endif %}),
+    // shipping
+    decimal({{ order.shipping_total }}),
+    // city
+    '{{ order.billing_detail_city|escapejs }}',
+    // state or province
+    '{{ order.billing_detail_state|escapejs }}',
+    // country
+    '{{ order.billing_detail_country|escapejs }}'
+]];
+
+{% for item in items %}
+_gaq.push(['_addItem',
+    // order ID - required
+    '{{ order.id }}',
+    // SKU/code - required
+    '{{ item.sku }}',
+    // product name
+    '{{ item.name|escapejs }}',
+    // category or variation
+    '{{ item.description|escapejs }}',
+    // unit price - required
+    decimal({{ item.unit_price }}),
+    // quantity - required
+    '{{ item.quantity }}'
+]);
+{% endfor %}
+
+// submits transaction to the Analytics servers
+_gaq.push(['_trackTrans']);
+
+</script>
+{% endif %}
+{% endblock %}
+
+{% block title %}{% trans "Buy Now" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+{% for step in steps %}
+<li>{{ step.title }}</li>
+{% endfor %}
+<li><strong>{% trans "Buy Now" %}</strong></li>
+{% endblock %}
+
+
+{% block main %}
+<h1>{{ order.billing_detail_first_name }}, We're Nearly Done!</h1>
+<h1>Complete Your Order #{{ order.id }}</h1>
+<h2>Secure Payment With PayFast</h2>
+
+<br>
+<form  class="form-horizontal" action="https://www.payfast.co.za/eng/process" onsubmit="return click_84e5f936c3c36e96cee7d60f15777ccf( this );" method="post">
+<div class="form-group">
+<div class="col-xs-10"><input type="hidden" name="merchant_id" value="{{ settings.PAYFAST_MERCHANT_ID }}"></div>
+<div class="col-xs-10"><input type="hidden" name="merchant_key" value="{{ settings.PAYFAST_MERCHANT_KEY }}"></div>
+<div class="col-xs-10"><input type="hidden" name="return_url" value="http://{{ request.get_host }}"></div>
+<div class="col-xs-10"><input type="hidden" name="cancel_url" value="http://{{ request.get_host }}/shop/checkout/complete/"></div>
+<div class="col-xs-10"><input type="hidden" name="name_first" value="{{ order.billing_detail_first_name }}" /></div>
+<div class="col-xs-10"><input type="hidden" name="name_last" value="{{ order.billing_detail_last_name }}" /></div>
+<div class="col-xs-10"><input type="hidden" name="email_address" value="{{ order.billing_detail_email }}" /></div>
+<div class="col-xs-10"><input type="hidden" name="m_payment_id" value="{{ order.id }}" /></div>
+<div class="col-xs-10"><input type="hidden" name="amount" value="{{ order.total }}"></div>
+<div class="col-xs-10"><input type="hidden" name="item_name" value="Purchase from {{ settings.SITE_TITLE }} for Order ID #{{ order.id }}"></div>
+<div class="col-xs-10">
+<input type="hidden" name="item_description" value="{{ order.shipping_detail_street }}, {{ order.shipping_detail_city }}, {{ order.shipping_detail_state }}, {{ order.shipping_detail_country }}, {{ order.shipping_detail_postcode }}, {{ order.shipping_detail_phone }}">
+</div>
+<div class="col-xs-10"><input type="image" src="https://www.payfast.co.za/images/buttons/buynow_basic_logo.gif" width="95" height="57" alt="Buy Now" title="Buy Now with PayFast"></div>
+</div>
+</form>
+
+
+<form class="order-complete-form" method="post" action="{% url "shop_invoice_resend" order.id %}?next={{ request.path }}">
+    {% csrf_token %}
+    {% if has_pdf %}
+    <a class="btn btn-primary" href="{% url "shop_invoice" order.id %}?format=pdf">{% trans "Download Order in PDF" %}</a>
+    {% endif %}
+    <a class="btn btn-default" target="_blank" href="{% url "shop_invoice" order.id %}">{% trans "View Order In Your Browser" %}</a>
+    <input type="submit" class="btn btn-default" value="{% trans "Re-send Order Email" %}">
+</form>
+{% endblock %}
+
+{% block r_w %}{% endblock %}
